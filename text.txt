@@ -1,0 +1,3 @@
+This file works as example of how this works.
+The team love coding
+The team is afraid of compilers
