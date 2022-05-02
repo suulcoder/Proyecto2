@@ -165,5 +165,7 @@ int main(int argc, char *argv[]){
 		printf("FOUND KEY:\n %li %s\n", found, cipher);
 	}
 
+	free(cipher);
+
 	MPI_Finalize();
 }
