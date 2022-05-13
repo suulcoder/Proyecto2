@@ -1,51 +1,44 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>      
-#include <mpi.h>
-#include <random>
-#include <iostream>
-using std::cout;
-using std::cerr;
-using std::endl;
-
-#include <string>
-using std::string;
-
-#include <cstdlib>
-using std::exit;
-
-#include <fstream>
-using std::ifstream;
-
 /*
+
 ***
 Here we include all Cryptopp lib imports
 ***
+
 */
 
-#include "cryptopp/osrng.h"
-using CryptoPP::AutoSeededRandomPool;
-
 #include "cryptopp/cryptlib.h"
-using CryptoPP::Exception;
-
-#include "cryptopp/hex.h"
-using CryptoPP::HexEncoder;
-using CryptoPP::HexDecoder;
-
+#include "cryptopp/des.h"
 #include "cryptopp/filters.h"
+#include "cryptopp/hex.h"
+#include "cryptopp/modes.h"
+#include "cryptopp/osrng.h"
+#include "cryptopp/secblock.h"
+#include <cstdlib>
+#include <fstream>
+#include <iostream>
+#include <math.h>      
+#include <mpi.h>
+#include <random>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string>
+
+using CryptoPP::AutoSeededRandomPool;
+using CryptoPP::CBC_Mode;
+using CryptoPP::DES;
+using CryptoPP::Exception;
+using CryptoPP::HexDecoder;
+using CryptoPP::HexEncoder;
+using CryptoPP::SecByteBlock;
+using CryptoPP::StreamTransformationFilter;
 using CryptoPP::StringSink;
 using CryptoPP::StringSource;
-using CryptoPP::StreamTransformationFilter;
-
-#include "cryptopp/des.h"
-using CryptoPP::DES;
-
-#include "cryptopp/modes.h"
-using CryptoPP::CBC_Mode;
-
-#include "cryptopp/secblock.h"
-using CryptoPP::SecByteBlock;
+using std::cerr;
+using std::cout;
+using std::endl;
+using std::exit;
+using std::ifstream;
+using std::string;
 
 /*
 ***
@@ -75,12 +68,15 @@ It calls the decode function declared above
 */
 
 bool validate_key(CBC_Mode< DES >::Decryption decryptor, string cipher, CryptoPP::byte key[DES::KEYLENGTH], CryptoPP::byte iv[DES::BLOCKSIZE]){
-	return decode(decryptor, cipher, key, iv).find("bubble") != std::string::npos;	
+	bool is_key = decode(decryptor, cipher, key, iv).find("bubble") != std::string::npos;	
+	if(is_key){
+	cout << "el mensaje es " << decode(decryptor, cipher, key, iv) << endl;
+	}
+	return is_key;
 }
 
 int main(int argc, char* argv[]) {
 	SecByteBlock key(8);
-	prng.GenerateBlock(key, 8);
 
 	CryptoPP::byte iv[DES::BLOCKSIZE] = {0};
 	CryptoPP::byte key2[DES::KEYLENGTH] = {250, 255, 255, 255, 255, 255, 255, 223};
@@ -196,7 +192,7 @@ int main(int argc, char* argv[]) {
 		uint64_t x = 0;
 		unsigned char arrayOfByte[8];
 		memcpy(arrayOfByte, &lowerLimit, 8);
-		cout << "Checking " << id << " " << (int)arrayOfByte[0] << (int)arrayOfByte[1] << (int)arrayOfByte[2] << (int)arrayOfByte[3] << (int)arrayOfByte[4] << (int)arrayOfByte[5] << (int)arrayOfByte[6] << (int)arrayOfByte[7] << "\n";
+		cout << "Evaluando el thread " << id << "\n";
 
 		bool is_key = false;
 		std::default_random_engine generator;
@@ -209,8 +205,8 @@ int main(int argc, char* argv[]) {
 
 			if (is_key) {
 				found = 15;
-				cout << "Found " << id << "\n";
-				cout << "Checking " << id << " " << (int)arrayOfByte[0] << (int)arrayOfByte[1] << (int)arrayOfByte[2] << (int)arrayOfByte[3] << (int)arrayOfByte[4] << (int)arrayOfByte[5] << (int)arrayOfByte[6] << (int)arrayOfByte[7] << "\n";
+				cout << " Se encontro en el thread " << id << "\n";
+				cout << " Utilizando la llave " << (int)arrayOfByte[0] << (int)arrayOfByte[1] << (int)arrayOfByte[2] << (int)arrayOfByte[3] << (int)arrayOfByte[4] << (int)arrayOfByte[5] << (int)arrayOfByte[6] << (int)arrayOfByte[7] << "\n";
 				for(int node=0; node<N; node++){
 					MPI_Send(&found, 1, MPI_LONG, node, 0, MPI_COMM_WORLD);
 				}
