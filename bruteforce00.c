@@ -3,7 +3,9 @@
 #include <stdlib.h>
 #include <mpi.h>
 #include <unistd.h>
-#include <tirpc/rpc/des_crypt.h>
+//#include <tirpc/rpc/des_crypt.h>
+
+#include "DesLib.c"
 
 
 #define MAXC 1024
@@ -99,7 +101,7 @@ int main(int argc, char *argv[]){
 	long mylower, myupper;
 
 	MPI_Status st;
-	MPI_Request req;
+	/*MPI_Request req;
 
 	FILE *file;
 	char *buffer = malloc(sizeof(char) * MAXC);
@@ -118,11 +120,11 @@ int main(int argc, char *argv[]){
 
 	cipher[i] = '\0';
 
-	free(buffer);
+	free(buffer);*/
 
 	int ciphlen = strlen(cipher);
 
-	_encrypt(KEY, cipher, ciphlen);
+	_encrypt(KEY, DEFAULT_FILENAME, ciphlen);
 
 	MPI_Comm comm = MPI_COMM_WORLD;
 
