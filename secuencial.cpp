@@ -50,7 +50,7 @@ https://github.com/weidai11/cryptopp
 ***
 */
 
-string decode(CBC_Mode< DES >::Decryption decryptor, string cipher, CryptoPP::byte key[DES::KEYLENGTH], CryptoPP::byte iv[DES::BLOCKSIZE]){
+string decrypt(CBC_Mode< DES >::Decryption decryptor, string cipher, CryptoPP::byte key[DES::KEYLENGTH], CryptoPP::byte iv[DES::BLOCKSIZE]){
 	string recovered;
 	decryptor.SetKeyWithIV(key, 8, iv);
 	StringSource s(cipher, true, 
@@ -71,7 +71,7 @@ It calls the decode function declared above
 */
 
 bool validate_key(CBC_Mode< DES >::Decryption decryptor, string cipher, CryptoPP::byte key[DES::KEYLENGTH], CryptoPP::byte iv[DES::BLOCKSIZE]){
-	bool is_key = decode(decryptor, cipher, key, iv).find("bubble") != std::string::npos;	
+	bool is_key = decrypt(decryptor, cipher, key, iv).find("bubble") != std::string::npos;	
 	if(is_key){
 	//cout << "el mensaje cifrado es: " << cipher << endl;
 	//cout << "El mensaje es: " << decode(decryptor, cipher, key, iv) << endl;
@@ -83,7 +83,7 @@ int main(int argc, char* argv[]) {
 	SecByteBlock key(8);
 
 	CryptoPP::byte iv[DES::BLOCKSIZE] = {0};
-	CryptoPP::byte key2[DES::KEYLENGTH] = {1, 0, 0, 0, 0, 0, 0, 0};
+	CryptoPP::byte key2[DES::KEYLENGTH] = {255, 255, 255, 255, 0, 0, 0, 0};
 	AutoSeededRandomPool prng;
 
 	string readLine;
