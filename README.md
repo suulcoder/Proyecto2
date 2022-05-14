@@ -13,3 +13,15 @@ Ejecutar archivo
  ``` 
  ./secuencial <Nombre del archivo.txt>
  ```
+
+
+### Ejecutar archivo Paralelo
+
+Compilar archivo
+ ``` 
+ g++ -o secuencial secuencial.cpp -lcryptopp 
+ ```
+Ejecutar archivo
+ ``` 
+ ./secuencial <Nombre del archivo.txt>
+ ```
