@@ -4,4 +4,12 @@
 Obtención de llave de cifrado por medio de la técnica bruteforce. Implementa MPI para mejorar el desempeño.
 
 ### Ejecutar archivo secuencial
- ```g++ -o secuencial secuencial.cpp -lcryptopp ```
+
+Compilar archivo
+ ``` 
+ g++ -o secuencial secuencial.cpp -lcryptopp 
+ ```
+Ejecutar archivo
+ ``` 
+ ./secuencial <Nombre del archivo.txt>
+ ```
