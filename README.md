@@ -19,9 +19,9 @@ Ejecutar archivo
 
 Compilar archivo
  ``` 
- g++ -o secuencial secuencial.cpp -lcryptopp 
+ mpic++ -o <object> -lcryptopp bruteforce.cpp
  ```
 Ejecutar archivo
  ``` 
- ./secuencial <Nombre del archivo.txt>
+ mpirun -np <N> ./<object> <input_file> <keyword> <mode (1|2)>
  ```
